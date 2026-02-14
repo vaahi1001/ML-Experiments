@@ -1,24 +1,14 @@
 import streamlit as st
 import joblib
-import numpy as np
-#import matplotlib.pyplot as plt
 import pandas as pd
 
-st.write("Hello World")  # Works inside Streamlit app
-print("Hello World")     # Works in terminal, but might not show in Streamlit UI
+st.title("Heart Disease Detection - Multi Model Demo")
 
-pipeline = joblib.load("/mount/src/ml-experiments/01_ClassificationModels/01_logisticreg_pipeline_1.pkl")
+st.write("Enter patient details for prediction:")
 
-
-st.title("Heart Disease Prediction App")
-
-st.write("""
-Enter patient details below to predict heart disease:
-""")
-
-# Step 2: User inputs
+# --- User Inputs ---
 age = st.number_input("Age", min_value=1, max_value=120, value=50)
-sex = st.selectbox("Sex", [0, 1])  # 0 = Female, 1 = Male
+sex = st.selectbox("Sex", [0, 1])
 cp = st.selectbox("Chest Pain Type (0-3)", [0, 1, 2, 3])
 trestbps = st.number_input("Resting Blood Pressure", value=120)
 chol = st.number_input("Serum Cholesterol", value=200)
@@ -31,7 +21,7 @@ slope = st.selectbox("Slope of ST Segment (0-2)", [0, 1, 2])
 ca = st.selectbox("Number of Major Vessels (0-3)", [0, 1, 2, 3])
 thal = st.selectbox("Thalassemia (1 = normal, 2 = fixed defect, 3 = reversible defect)", [1, 2, 3])
 
-# Step 3: Prepare input dataframe
+# --- Prepare input dataframe ---
 input_data = pd.DataFrame({
     "age": [age],
     "sex": [sex],
@@ -48,11 +38,33 @@ input_data = pd.DataFrame({
     "thal": [thal]
 })
 
-# Step 4: Make prediction
-if st.button("Predict"):
-    prediction = pipeline.predict(input_data)[0]
-    probability = pipeline.predict_proba(input_data)[0][prediction]
-    if prediction == 1:
-        st.error(f"High risk of heart disease! (Probability: {probability:.2f})")
-    else:
-        st.success(f"Low risk of heart disease. (Probability: {probability:.2f})")
+# --- Load all models ---
+# For demo, same file renamed; in real scenario, each would be different
+model_files = {
+    "Logistic Regression": "01_logisticreg_pipeline_1.pkl",
+    "Decision Tree": "01_logisticreg_pipeline_1.pkl",
+    "K-Nearest Neighbor": "01_logisticreg_pipeline_1.pkl",
+    "Naive Bayes": "01_logisticreg_pipeline_1.pkl",
+    "Random Forest": "01_logisticreg_pipeline_1.pkl",
+    "XGBoost": "01_logisticreg_pipeline_1.pkl"
+}
+
+models = {}
+for name, file in model_files.items():
+    models[name] = joblib.load(file)
+
+# --- Predict ---
+if st.button("Predict with all models"):
+    results = []
+    for name, model in models.items():
+        pred = model.predict(input_data)[0]
+        prob = model.predict_proba(input_data)[0][pred]
+        risk = "High Risk" if pred == 1 else "Low Risk"
+        results.append({
+            "Model": name,
+            "Prediction": risk,
+            "Probability": f"{prob:.2f}"
+        })
+
+    st.write("### Predictions from all models:")
+    st.table(pd.DataFrame(results))
