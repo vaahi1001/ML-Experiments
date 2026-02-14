@@ -68,3 +68,24 @@ if st.button("Predict with all models"):
 
     st.write("### Predictions from all models:")
     st.table(pd.DataFrame(results))
+
+    st.write("### Model Evaluation Metrics on Test Set")
+    metrics_list = []
+
+    for name, model in models.items():
+     y_pred = model.predict(X_test)
+     y_proba = model.predict_proba(X_test)[:,1]
+    
+     metrics = {
+        "Model": name,
+        "Accuracy": round(accuracy_score(y_test, y_pred), 2),
+        "AUC": round(roc_auc_score(y_test, y_proba), 2),
+        "Precision": round(precision_score(y_test, y_pred), 2),
+        "Recall": round(recall_score(y_test, y_pred), 2),
+        "F1 Score": round(f1_score(y_test, y_pred), 2),
+        "MCC": round(matthews_corrcoef(y_test, y_pred), 2)
+     }
+     metrics_list.append(metrics)
+
+   st.table(pd.DataFrame(metrics_list))
+
