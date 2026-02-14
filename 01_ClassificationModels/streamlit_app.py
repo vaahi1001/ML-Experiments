@@ -101,7 +101,7 @@ patient_readable['exang'] = patient_readable['exang'].map(exang_map)
 patient_readable['slope'] = patient_readable['slope'].map(slope_map)
 patient_readable['thal'] = patient_readable['thal'].map(thal_map)
 
-st.write("### Patient Details (Readable Format)")
+st.write("Summary of Patient Details : ")
 st.dataframe(patient_readable)
 
 # --- Load all model PKLs dynamically ---
