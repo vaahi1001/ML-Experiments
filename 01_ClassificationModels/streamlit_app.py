@@ -12,7 +12,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
-#import xgboost as xgb
+import xgboost as xgb
 import os
 import numpy as np
 
@@ -111,7 +111,7 @@ model_files = [
     "/mount/src/ml-experiments/01_ClassificationModels/k-nearestneighbor_pipeline.pkl",
     "/mount/src/ml-experiments/01_ClassificationModels/naivebayes_pipeline.pkl",
     "/mount/src/ml-experiments/01_ClassificationModels/randomforest_pipeline.pkl"
-    #"/mount/src/ml-experiments/01_ClassificationModels/xgboost_pipeline.pkl"
+    "/mount/src/ml-experiments/01_ClassificationModels/xgboost_pipeline.pkl"
 ]
 
 models = {}
