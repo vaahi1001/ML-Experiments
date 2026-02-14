@@ -121,14 +121,6 @@ for file in model_files:
     except Exception as e:
         st.warning(f"Could not load {file}: {e}")
 
-
-xgb_model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss')
-xgb_model.fit(X_train, y_train)
-
-import joblib
-joblib.dump(xgb_model, "xgboost_pipeline.pkl")
-
-
 # --- Button to run predictions ---
 if st.button("Predict with all models"):
     if not models:
