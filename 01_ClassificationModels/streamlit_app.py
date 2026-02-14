@@ -121,21 +121,6 @@ try:
 except Exception as e:
  print("Error loading model:", e)
         
-# Try predicting on test data
-try:
-  preds = xgb_model.predict(X_test)
-  probs = xgb_model.predict_proba(X_test)
-  print(preds[:5], probs[:5])
-except Exception as e:
-  print("Error predicting:", e)
-
-models = {}
-for file in model_files:
-    if os.path.exists(file):
-        model_name = os.path.basename(file).replace("_pipeline.pkl", "").replace("kneighbors", "K-NearestNeighbor").capitalize()
-        models[model_name] = joblib.load(file)
-    else:
-        st.warning(f"Model file {file} not found!")
 
 # --- Button to run predictions ---
 if st.button("Predict with all models"):
