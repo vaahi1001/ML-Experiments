@@ -123,19 +123,19 @@ for file in model_files:
         st.warning(f"Model file {file} not found!")
 
         # Try loading
-        try:
-            xgb_model = joblib.load('xgboost_pipeline.pkl')
-            print("Model loaded successfully")
-        except Exception as e:
-            print("Error loading model:", e)
+try:
+ xgb_model = joblib.load('xgboost_pipeline.pkl')
+ print("Model loaded successfully")
+except Exception as e:
+ print("Error loading model:", e)
         
-        # Try predicting on test data
-        try:
-            preds = xgb_model.predict(X_test)
-            probs = xgb_model.predict_proba(X_test)
-            print(preds[:5], probs[:5])
-        except Exception as e:
-            print("Error predicting:", e)
+# Try predicting on test data
+try:
+  preds = xgb_model.predict(X_test)
+  probs = xgb_model.predict_proba(X_test)
+  print(preds[:5], probs[:5])
+except Exception as e:
+  print("Error predicting:", e)
 
 # --- Button to run predictions ---
 if st.button("Predict with all models"):
@@ -210,19 +210,6 @@ if st.button("Predict with all models"):
         st.write("### Model KPIs on Test Set")
         st.table(pd.DataFrame(metrics_list))
 
-        # Try loading
-        try:
-            xgb_model = joblib.load('xgboost_model.pkl')
-            print("Model loaded successfully")
-        except Exception as e:
-            print("Error loading model:", e)
-        
-        # Try predicting on test data
-        try:
-            preds = xgb_model.predict(X_test)
-            probs = xgb_model.predict_proba(X_test)
-            print(preds[:5], probs[:5])
-        except Exception as e:
-            print("Error predicting:", e)
+
 
 
