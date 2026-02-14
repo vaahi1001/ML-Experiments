@@ -19,27 +19,6 @@ import numpy as np
 
 st.title("Heart Disease Detection")
 
-gender_map = {0: "Female", 1: "Male"}
-cp_map = {0: "Typical Angina", 1: "Atypical Angina", 2: "Non-Anginal Pain", 3: "Asymptomatic"}
-fbs_map = {0: "Fasting Glucose <= 120mg/dl", 1: "Fasting Glucose > 120mg/dl"}
-restecg_map = {0: "Normal", 1: "ST-T Wave Abnormality", 2: "Left Ventricular Hypertrophy"}
-exang_map = {0: "No", 1: "Yes"}
-slope_map = {0: "Upsloping", 1: "Flat", 2: "Downsloping"}
-thal_map = {1: "Normal", 2: "Fixed Defect", 3: "Reversible Defect"}
-
-
-# --- User Inputs ---
-patient_readable = patient.copy()
-patient_readable['sex'] = gender_map[patient['sex']]
-patient_readable['cp'] = cp_map[patient['cp']]
-patient_readable['fbs'] = fbs_map[patient['fbs']]
-patient_readable['restecg'] = restecg_map[patient['restecg']]
-patient_readable['exang'] = exang_map[patient['exang']]
-patient_readable['slope'] = slope_map[patient['slope']]
-patient_readable['thal'] = thal_map[patient['thal']]
-
-print(patient_readable)
-
 age = st.number_input("Age", min_value=1, max_value=120, value=50)
 
 # Sex
@@ -102,6 +81,28 @@ input_data = pd.DataFrame({
     "ca": [ca],
     "thal": [thal]
 })
+
+
+# --- Create a readable version for display ---
+gender_map = {0: "Female", 1: "Male"}
+cp_map = {0: "Typical Angina", 1: "Atypical Angina", 2: "Non-Anginal Pain", 3: "Asymptomatic"}
+fbs_map = {0: "No", 1: "Yes"}
+restecg_map = {0: "Normal", 1: "ST-T Wave Abnormality", 2: "Left Ventricular Hypertrophy"}
+exang_map = {0: "No", 1: "Yes"}
+slope_map = {0: "Upsloping", 1: "Flat", 2: "Downsloping"}
+thal_map = {1: "Normal", 2: "Fixed Defect", 3: "Reversible Defect"}
+
+patient_readable = input_data.copy()
+patient_readable['sex'] = patient_readable['sex'].map(gender_map)
+patient_readable['cp'] = patient_readable['cp'].map(cp_map)
+patient_readable['fbs'] = patient_readable['fbs'].map(fbs_map)
+patient_readable['restecg'] = patient_readable['restecg'].map(restecg_map)
+patient_readable['exang'] = patient_readable['exang'].map(exang_map)
+patient_readable['slope'] = patient_readable['slope'].map(slope_map)
+patient_readable['thal'] = patient_readable['thal'].map(thal_map)
+
+st.write("### Patient Details (Readable Format)")
+st.dataframe(patient_readable)
 
 # --- Load all model PKLs dynamically ---
 model_files = [
