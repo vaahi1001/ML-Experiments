@@ -137,13 +137,27 @@ if st.button("Predict with all models"):
                 risk = "High Risk" if pred == 1 else "Low Risk"
             except Exception as e:
                 pred, prob, risk = "Error", "Error", f"Error: {e}"
-            # Ensure prob is a single float
-            if hasattr(prob, "__iter__"):  # e.g., NumPy array
-             prob_value = float(prob[0])  # take the first element
-            else:
-             prob_value = float(prob)
-
-            results.append({ "Model": name,"Prediction": risk, "Probability": f"{prob_value:.2f}"})
+         # Get probability safely
+            try:
+                prob_array = model.predict_proba(input_data)
+                # prob_array could be 2D [[0.1, 0.9]] or 1D [0.9]
+                if prob_array.ndim == 2:
+                    prob_value = float(prob_array[0][1])  # second column = 'High Risk'
+                else:
+                    prob_value = float(prob_array[0])
+            except AttributeError:
+                # model has no predict_proba
+                prob_value = None
+            
+            # Determine risk label
+            risk = "High Risk" if prob_value is not None and prob_value > 0.5 else "Low Risk"
+            
+            # Append safely
+            results.append({
+                "Model": name,
+                "Prediction": risk,
+                "Probability": f"{prob_value:.2f}" if prob_value is not None else "N/A"
+            })
 
 
 
