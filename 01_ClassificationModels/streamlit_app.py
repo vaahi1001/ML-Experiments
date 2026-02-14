@@ -7,3 +7,6 @@ import pandas as pd
 st.write("Hello World")  # Works inside Streamlit app
 print("Hello World")     # Works in terminal, but might not show in Streamlit UI
 
+pipeline = joblib.load("01_logisticreg_pipeline.pkl")
+
+st.title("Heart Disease Prediction App")
