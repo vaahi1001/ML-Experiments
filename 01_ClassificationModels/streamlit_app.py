@@ -114,13 +114,7 @@ model_files = [
     "/mount/src/ml-experiments/01_ClassificationModels/xgboost_pipeline.pkl"
 ]
 
-# Try loading
-try:
- xgb_model = joblib.load('xgboost_pipeline.pkl')
- print("Model loaded successfully")
-except Exception as e:
- print("Error loading model:", e)
-        
+      
 
 # --- Button to run predictions ---
 if st.button("Predict with all models"):
