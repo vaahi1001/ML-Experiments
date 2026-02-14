@@ -137,7 +137,15 @@ if st.button("Predict with all models"):
                 risk = "High Risk" if pred == 1 else "Low Risk"
             except Exception as e:
                 pred, prob, risk = "Error", "Error", f"Error: {e}"
-            results.append({"Model": name, "Prediction": risk, "Probability": f"{prob:.2f}"})
+            # Ensure prob is a single float
+            if hasattr(prob, "__iter__"):  # e.g., NumPy array
+             prob_value = float(prob[0])  # take the first element
+            else:
+             prob_value = float(prob)
+
+            results.append({ "Model": name,"Prediction": risk, "Probability": f"{prob_value:.2f}"})
+
+
 
         st.write("### Predictions for this patient")
         st.table(pd.DataFrame(results))
