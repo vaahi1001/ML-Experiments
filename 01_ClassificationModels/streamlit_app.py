@@ -41,12 +41,12 @@ input_data = pd.DataFrame({
 # --- Load all models ---
 # For demo, same file renamed; in real scenario, each would be different
 model_files = {
-    "Logistic Regression": "01_logisticreg_pipeline_1.pkl",
-    "Decision Tree": "01_logisticreg_pipeline_1.pkl",
-    "K-Nearest Neighbor": "01_logisticreg_pipeline_1.pkl",
-    "Naive Bayes": "01_logisticreg_pipeline_1.pkl",
-    "Random Forest": "01_logisticreg_pipeline_1.pkl",
-    "XGBoost": "01_logisticreg_pipeline_1.pkl"
+    "Logistic Regression": "/mount/src/ml-experiments/01_ClassificationModels/01_logisticreg_pipeline_1.pkl",
+    "Decision Tree": "/mount/src/ml-experiments/01_ClassificationModels/01_logisticreg_pipeline_1.pkl",
+    "K-Nearest Neighbor": "/mount/src/ml-experiments/01_ClassificationModels/01_logisticreg_pipeline_1.pkl",
+    "Naive Bayes": "/mount/src/ml-experiments/01_ClassificationModels/01_logisticreg_pipeline_1.pkl",
+    "Random Forest": "/mount/src/ml-experiments/01_ClassificationModels/01_logisticreg_pipeline_1.pkl",
+    "XGBoost": "/mount/src/ml-experiments/01_ClassificationModels/01_logisticreg_pipeline_1.pkl"
 }
 
 models = {}
