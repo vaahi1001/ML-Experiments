@@ -135,8 +135,6 @@ else:
     )
 
 if st.button("Run Prediction"):
-if st.button("Run Prediction"):
-
     if not selected_models:
         st.warning("Please select at least one model.")
     
