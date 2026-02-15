@@ -207,16 +207,16 @@ if st.button("Run Prediction"):
                     "Probability (%)": "Error"
                 })
 
-        st.markdown("# ## Prediction Results")
+        st.markdown("Predicting Outcome based on Patient Inputs : ")
         st.table(pd.DataFrame(prediction_results))
 
         if feature_results:
-            st.markdown("### Model Feature Importance")
+            st.markdown("Top 3 Important criteria for prediction :  ")
             st.dataframe(pd.DataFrame(feature_results))
 
 ### KPI details should also be dynamic
       
-        st.markdown("### Model KPIs (Test Set)")
+        st.markdown("Overall model performance:")
 
         kpi_results = []
 
