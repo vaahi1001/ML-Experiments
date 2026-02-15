@@ -121,6 +121,23 @@ for file in model_files:
     except Exception as e:
         st.warning(f"Could not load {file}: {e}")
 
+feature_name_map = {
+    "age": "Age",
+    "sex": "Sex",
+    "cp": "Chest Pain Type",
+    "trestbps": "Resting Blood Pressure",
+    "chol": "Serum Cholesterol",
+    "fbs": "Fasting Blood Sugar",
+    "restecg": "Resting ECG",
+    "thalach": "Max Heart Rate",
+    "exang": "Exercise Induced Angina",
+    "oldpeak": "ST Depression",
+    "slope": "Slope of ST Segment",
+    "ca": "Major Vessels",
+    "thal": "Thalassemia"
+}
+
+
 # --- Model Selection Section ---
 st.markdown("## Select Models for Prediction")
 model_names = list(models.keys())
