@@ -4,4 +4,5 @@ scikit-learn
 matplotlib
 streamlit
 joblib
-xgboost==1.7.5
+xgboost==2.0.3
+
