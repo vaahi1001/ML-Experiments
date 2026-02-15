@@ -167,7 +167,8 @@ if st.button("Run Prediction"):
                 # Sorted Feature Importance
                 #-----------------------------
                 if hasattr(model, "feature_importances_"):
-                importance = model.feature_importances_
+                  importance = model.feature_importances_
+              
                 feature_df = pd.DataFrame({
                 "Feature": input_data.columns,
                 "Importance": importance
