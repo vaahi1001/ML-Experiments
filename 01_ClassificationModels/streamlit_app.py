@@ -17,6 +17,7 @@ import xgboost as xgb
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 st.title("Heart Disease Detection")
