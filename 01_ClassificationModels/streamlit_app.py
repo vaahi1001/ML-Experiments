@@ -16,6 +16,7 @@ from sklearn.ensemble import RandomForestClassifier
 import xgboost as xgb
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 st.title("Heart Disease Detection")
@@ -260,35 +261,45 @@ if st.button("Run Prediction"):
         if kpi_results:
             st.table(pd.DataFrame(kpi_results))
           
-        st.markdown("### Confusion Matrix & Classification Report")
+        st.markdown("Confusion Matrix & Classification Report")
 
         for name in selected_models:
-         model = models[name]
-        try:
-         X_test = model.X_test
-         y_test = model.y_test
-
-         y_pred = model.predict(X_test)
-
-         # --- Confusion Matrix ---
-         cm = confusion_matrix(y_test, y_pred)
-         st.write(f"Confusion Matrix for {name}")
-         st.write(cm)
-
-         # Optional: nicer heatmap
-         fig, ax = plt.subplots()
-         sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", ax=ax)
-         ax.set_xlabel("Predicted")
-         ax.set_ylabel("Actual")
-         st.pyplot(fig)
-
-        # --- Classification Report ---
-         cr = classification_report(y_test, y_pred, output_dict=True)
-         st.write(f"Classification Report for {name}")
-         st.dataframe(pd.DataFrame(cr).transpose())
-
-        except Exception as e:
-         st.write(f"Could not generate confusion matrix/report for {name}: {e}")
+            model = models[name]
+            try:
+                X_test = model.X_test
+                y_test = model.y_test
+        
+                y_pred = model.predict(X_test)
+        
+                # --- Confusion Matrix ---
+                cm = confusion_matrix(y_test, y_pred)
+                st.markdown(f"**Confusion Matrix for {name}**")
+        
+                # Create a labeled DataFrame for easier understanding
+                cm_df = pd.DataFrame(
+                    cm,
+                    index=["Actual Low Risk", "Actual High Risk"],
+                    columns=["Predicted Low Risk", "Predicted High Risk"]
+                )
+                st.dataframe(cm_df)
+        
+                # Optional: heatmap for better visualization
+                fig, ax = plt.subplots()
+                sns.heatmap(cm_df, annot=True, fmt="d", cmap="Blues", ax=ax)
+                ax.set_title(f"{name} - Confusion Matrix")
+                ax.set_xlabel("Predicted Label")
+                ax.set_ylabel("Actual Label")
+                st.pyplot(fig)
+        
+                # --- Classification Report ---
+                st.markdown(f"**Classification Report for {name}**")
+                cr = classification_report(y_test, y_pred, output_dict=True)
+                cr_df = pd.DataFrame(cr).transpose()
+                cr_df = cr_df.rename(index={"0": "Low Risk", "1": "High Risk"})
+                st.dataframe(cr_df.round(2))
+        
+            except Exception as e:
+                st.error(f"Could not generate confusion matrix/report for {name}: {e}")
 
 
 
