@@ -1,6 +1,14 @@
 Goal : The goal of this project is to predict the likelihood of heart disease in patients based on clinical and demographic features. 
         Using machine learning models, we aim to classify patients into High Risk or Low Risk categories and evaluate the performance of multiple algorithms to determine the most effective model for this dataset.
 
+About the Dataset: 
+The dataset is used for predicting heart disease risk in patients.Its simple and helps me focus more on the Model and StreamLit App.
+Each row represents one patient with clinical and demographic features.
+Key features include: age, sex, chest pain type, resting blood pressure, cholesterol, fasting blood sugar, electrocardiographic results, maximum heart rate achieved, exercise-induced angina, ST depression, slope of ST segment, number of major vessels, and thalassemia type.
+The target variable indicates the presence (1) or absence (0) of heart disease.
+The dataset is commonly split into training and testing sets to build and evaluate classification models.
+It allows comparison of multiple machine learning algorithms for accuracy and reliability.
+
 App link: https://ml-experiments-3qdbb68fszha5xlhtcnzbc.streamlit.app/
 
 Description of the App :
