@@ -121,77 +121,117 @@ for file in model_files:
     except Exception as e:
         st.warning(f"Could not load {file}: {e}")
 
-# --- Button to run predictions ---
-if st.button("Predict with all models"):
-    if not models:
-        st.error("No models loaded. Check PKL files.")
+# --- Model Selection Section ---
+st.markdown("## Select Models for Prediction")
+model_names = list(models.keys())
+# Option to select all
+select_all = st.checkbox("Select All Models")
+if select_all:
+    selected_models = model_names
+else:
+    selected_models = st.multiselect(
+        "Choose Models:",
+        model_names
+    )
+
+if st.button("Run Prediction"):
+if st.button("Run Prediction"):
+
+    if not selected_models:
+        st.warning("Please select at least one model.")
+    
     else:
-        # --- 1️⃣ Predictions for user input ---
-        results = []
-        for name, model in models.items():
+        prediction_results = []
+        feature_results = []
+
+        for name in selected_models:
+            model = models[name]
+
             try:
                 pred = model.predict(input_data)[0]
-                prob = model.predict_proba(input_data)[0][pred]
+
+                try:
+                    prob_array = model.predict_proba(input_data)
+                    prob_value = float(prob_array[0][1])
+                except:
+                    prob_value = None
+
                 risk = "High Risk" if pred == 1 else "Low Risk"
+
+                prediction_results.append({
+                    "Model": name,
+                    "Prediction": risk,
+                    "Probability (%)": f"{prob_value*100:.2f}%" if prob_value is not None else "N/A"
+                })
+
+                # Feature importance (if available)
+                if hasattr(model, "feature_importances_"):
+                    importance = model.feature_importances_
+                    for feature, value in zip(input_data.columns, importance):
+                        feature_results.append({
+                            "Model": name,
+                            "Feature": feature,
+                            "Importance": round(value, 3)
+                        })
+
             except Exception as e:
-                pred, prob, risk = "Error", "Error", f"Error: {e}"
-         # Get probability safely
-            try:
-                prob_array = model.predict_proba(input_data)
-                # prob_array could be 2D [[0.1, 0.9]] or 1D [0.9]
-                if prob_array.ndim == 2:
-                    prob_value = float(prob_array[0][1])  # second column = 'High Risk'
-                else:
-                    prob_value = float(prob_array[0])
-            except AttributeError:
-                # model has no predict_proba
-                prob_value = None
-            
-            # Determine risk label
-            risk = "High Risk" if prob_value is not None and prob_value > 0.5 else "Low Risk"
-            
-            # Append safely
-            results.append({
-                "Model": name,
-                "Prediction": risk,
-                "Probability": f"{prob_value:.2f}" if prob_value is not None else "N/A"
-            })
+                prediction_results.append({
+                    "Model": name,
+                    "Prediction": f"Error: {e}",
+                    "Probability (%)": "Error"
+                })
 
+        st.markdown("### Prediction Results")
+        st.table(pd.DataFrame(prediction_results))
 
+        if feature_results:
+            st.markdown("### Model Feature Importance")
+            st.dataframe(pd.DataFrame(feature_results))
 
-        st.write("### Predictions for this patient")
-        st.table(pd.DataFrame(results))
+### KPI details should also be dynamic
+      
+        st.markdown("### Model KPIs (Test Set)")
 
-        # --- 2️⃣ KPIs on test data ---
-        metrics_list = []
-        for name, model in models.items():
+        kpi_results = []
+
+        for name in selected_models:
+            model = models[name]
+
             try:
                 X_test = model.X_test
                 y_test = model.y_test
+
                 y_pred = model.predict(X_test)
-                y_proba = model.predict_proba(X_test)[:,1]
-                metrics_list.append({
+
+                try:
+                    y_proba = model.predict_proba(X_test)[:, 1]
+                    auc_score = round(roc_auc_score(y_test, y_proba), 2)
+                except:
+                    auc_score = "N/A"
+
+                kpi_results.append({
                     "Model": name,
                     "Accuracy": round(accuracy_score(y_test, y_pred), 2),
-                    "AUC": round(roc_auc_score(y_test, y_proba), 2),
+                    "AUC": auc_score,
                     "Precision": round(precision_score(y_test, y_pred), 2),
                     "Recall": round(recall_score(y_test, y_pred), 2),
                     "F1 Score": round(f1_score(y_test, y_pred), 2),
                     "MCC": round(matthews_corrcoef(y_test, y_pred), 2)
                 })
+
             except Exception as e:
-                metrics_list.append({
+                kpi_results.append({
                     "Model": name,
-                    "Accuracy": "Error",
-                    "AUC": "Error",
-                    "Precision": "Error",
-                    "Recall": "Error",
-                    "F1 Score": "Error",
-                    "MCC": "Error"
+                    "Accuracy": "Unavailable",
+                    "AUC": "Unavailable",
+                    "Precision": "Unavailable",
+                    "Recall": "Unavailable",
+                    "F1 Score": "Unavailable",
+                    "MCC": "Unavailable"
                 })
 
-        st.write("### Model KPIs on Test Set")
-        st.table(pd.DataFrame(metrics_list))
+        if kpi_results:
+            st.table(pd.DataFrame(kpi_results))
 
 
 
