@@ -4,6 +4,7 @@ import streamlit as st
 import joblib
 import pandas as pd
 from sklearn.metrics import accuracy_score, roc_auc_score, precision_score, recall_score, f1_score, matthews_corrcoef
+from sklearn.metrics import confusion_matrix, classification_report
 import pandas as pd
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -259,35 +260,35 @@ if st.button("Run Prediction"):
         if kpi_results:
             st.table(pd.DataFrame(kpi_results))
           
-st.markdown("### Confusion Matrix & Classification Report")
+        st.markdown("### Confusion Matrix & Classification Report")
 
-for name in selected_models:
-    model = models[name]
-    try:
-        X_test = model.X_test
-        y_test = model.y_test
+        for name in selected_models:
+         model = models[name]
+        try:
+         X_test = model.X_test
+         y_test = model.y_test
 
-        y_pred = model.predict(X_test)
+         y_pred = model.predict(X_test)
 
-        # --- Confusion Matrix ---
-        cm = confusion_matrix(y_test, y_pred)
-        st.write(f"Confusion Matrix for {name}")
-        st.write(cm)
+         # --- Confusion Matrix ---
+         cm = confusion_matrix(y_test, y_pred)
+         st.write(f"Confusion Matrix for {name}")
+         st.write(cm)
 
-        # Optional: nicer heatmap
-        fig, ax = plt.subplots()
-        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", ax=ax)
-        ax.set_xlabel("Predicted")
-        ax.set_ylabel("Actual")
-        st.pyplot(fig)
+         # Optional: nicer heatmap
+         fig, ax = plt.subplots()
+         sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", ax=ax)
+         ax.set_xlabel("Predicted")
+         ax.set_ylabel("Actual")
+         st.pyplot(fig)
 
         # --- Classification Report ---
-        cr = classification_report(y_test, y_pred, output_dict=True)
-        st.write(f"Classification Report for {name}")
-        st.dataframe(pd.DataFrame(cr).transpose())
+         cr = classification_report(y_test, y_pred, output_dict=True)
+         st.write(f"Classification Report for {name}")
+         st.dataframe(pd.DataFrame(cr).transpose())
 
-    except Exception as e:
-        st.write(f"Could not generate confusion matrix/report for {name}: {e}")
+        except Exception as e:
+         st.write(f"Could not generate confusion matrix/report for {name}: {e}")
 
 
 
