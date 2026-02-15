@@ -1,1 +1,23 @@
+Goal : The goal of this project is to predict the likelihood of heart disease in patients based on clinical and demographic features. 
+        Using machine learning models, we aim to classify patients into High Risk or Low Risk categories and evaluate the performance of multiple algorithms to determine the most effective model for this dataset.
 
+App link: https://ml-experiments-3qdbb68fszha5xlhtcnzbc.streamlit.app/
+
+Description of the App :
+    a. Takes Patients input
+    b. We can run the input through one/more models - the following will adapt
+        1. Shows the model prediction : High Risk or Low Risk categories
+        2. Shows the top 3 features which is used to determine the prediction 
+        3. We can see the overall perfromance of the model/s. 
+        4. also added the Confusion Matrix & Classification Report
+
+Model Perfromance: 
+
+| ML Model Name       | Accuracy | AUC    | Precision | Recall | F1     | MCC    |
+| ------------------- | -------- | ------ | --------- | ------ | ------ | ------ |
+| Logistic Regression | 0.8500   | 0.9300 | 0.8700    | 0.8400 | 0.8600 | 0.7100 |
+| Decision Tree       | 0.8500   | 0.8600 | 0.9300    | 0.7800 | 0.8500 | 0.7200 |
+| K-nearest Neighbor  | 0.9000   | 0.9200 | 0.9300    | 0.8800 | 0.9000 | 0.8100 |
+| Naive Bayes         | 0.8700   | 0.8900 | 0.9000    | 0.8400 | 0.8700 | 0.7400 |
+| Random Forest       | 0.8500   | 0.9300 | 0.8500    | 0.8800 | 0.8600 | 0.7000 |
+| XGBoost             | 0.8000   | 0.9100 | 0.8600    | 0.7500 | 0.8000 | 0.6100 |
