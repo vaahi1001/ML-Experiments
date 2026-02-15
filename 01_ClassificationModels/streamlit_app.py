@@ -165,8 +165,6 @@ if st.button("Run Prediction"):
                     "Probability (%)": f"{prob_value*100:.2f}%" if prob_value is not None else "N/A"
                 })
 
-           
-                # -----------------------------
                 # Sorted Feature Importance
                 #-----------------------------
                 if hasattr(model, "feature_importances_"):
@@ -176,10 +174,14 @@ if st.button("Run Prediction"):
                   "Feature": input_data.columns,
                   "Importance": importance
                   }).sort_values(by="Importance", ascending=False)
+                  # Map readable names
+                  feature_df["Feature"] = feature_df["Feature"].map(feature_name_map)
+
+                  # Take only top 3 features
+                  feature_df = feature_df.head(3)
                   feature_df["Importance"] = feature_df["Importance"].round(3)
                   feature_df["Model"] = name
                   feature_results.extend(feature_df.to_dict(orient="records"))
-
 
             except Exception as e:
                 prediction_results.append({
@@ -188,7 +190,7 @@ if st.button("Run Prediction"):
                     "Probability (%)": "Error"
                 })
 
-        st.markdown("### Prediction Results")
+        st.markdown("# ## Prediction Results")
         st.table(pd.DataFrame(prediction_results))
 
         if feature_results:
